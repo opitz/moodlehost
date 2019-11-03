@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+# script to run an Apache instance with all trimmings to run or develop a Moodle environment
+# IMPORTANT! The provided server is by no means secure and shouild never be used in a production environment! 
+# m.opitz@qmul.ac.uk | 2019-11-01
+
+# v.0.1 - works
+# v.0.2 - allowing cli options to override values
+
+usage() { 
+	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
+	exit 1; 
+}
+
+help() {
+	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
+	echo "available options:"
+	echo "-d <db_host_ip>: set the ip address of the database server (default = 127.0.0.1)"
+	echo "-h this help page"
+	echo "-m <moodledata_path>: set path on host(!) to moodledata (default is ./moodledata)"
+	echo "-p <port>: set the port number used by Apache (default=80)"	
+	echo "-v <php_version>: select the PHP version (default=7.3, allowed values: 5.6, 7.0, 7.1, 7.2, 7.3)"
+	exit 1;
+}
+
+if [ "$1" == "" ]
+then
+        usage
+fi
+
+if [ "$1" == "-h" ]
+then
+        help
+fi
+
+# get options
+while getopts ":d:h:m:p:v:" x; do
+    case "${x}" in
+        d)
+            d=${OPTARG}
+            ;;
+        h)
+            h=${OPTARG}
+            ;;
+        m)
+            m=${OPTARG}
+            ;;
+        p)
+            p=${OPTARG}
+            ;;
+    	v)  
+            v=${OPTARG}
+	       ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# default values
+php_options=(5.6 7.0 7.1 7.2 7.3)
+port=80
+moodledata=$PWD/moodledata
+db_host=127.0.0.1
+php=7.3
+
+# default values may be overridden in a /etc/moodlehost.conf file
+if [ -f /etc/moodlehost.conf ]
+        then
+. /etc/moodlehost.conf
+fi
+
+# all values may be overridden by using cli options
+if [ "$d" != "" ]
+then
+	db_host=$d
+fi
+
+if [ "$m" != "" ]
+then
+	moodledata=$m
+fi
+
+if [ "$p" != "" ]
+then
+	port=$p
+fi
+
+if [ "$v" != "" ]
+then
+	php=$v
+fi
+
+dockername="moodlehost-${port}"
+
+
+if [ "$1" == "start" ]
+then
+	docker rm -f $dockername >/dev/null 2>/dev/null
+	docker run -d -p ${port}:80 \
+		--name $dockername \
+		-v $PWD:/var/www/html \
+		-v ${moodledata}:/var/www/moodledata \
+		--add-host db_host:${db_host} \
+	moodlehq/moodle-php-apache:${php}
+	echo "==> $dockername with PHP version $php (re-)started on port $port using $PWD as web root"
+fi
+
+if [ "$1" == "stop" ]
+then
+	docker rm -f $dockername >/dev/null 2>/dev/null
+	echo "==> $dockername stopped and removed!"
+fi
+
+if [ "$1" == "purge" ]
+then
+	rm -rf ${moodledata}
+	echo "==> $dockername: moodledata purged"
+fi
