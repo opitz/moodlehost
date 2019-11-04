@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+if [[ $EUID -ne 0 ]]; then
+   echo "SORRY! This script must be run as root/superuser!" 
+   exit 1
+fi
+
+cp ./moodlehost /usr/local/bin/moodlehost
+cp ./moodlehost.conf /etc/moodlehost
+
+echo "Please press any key to open that file with an editor, make any necessay changes and save them."
+echo "The setup will continue after you have closed the editor."
+read -n 1 -s
+sudo nano /etc/moodlehost.conf
+
+# check for the updated config file and read the settings
+if [ ! -f /etc/moodlehost.conf ]
+	then
+	echo "No configuration file found at /etc/moodlehost.conf - aborting!"
+	exit 1
+fi
+
+echo "moodlehost is now installed. Change into a directory you want to host and issue 'moodlehost start' to start with default values"
+

@@ -2,10 +2,11 @@
 
 # script to run an Apache instance with all trimmings to run or develop a Moodle environment
 # IMPORTANT! The provided server is by no means secure and shouild never be used in a production environment! 
-# m.opitz@qmul.ac.uk | 2019-11-01
+# m.opitz@qmul.ac.uk | 2019-11-04
 
 # v.0.1 - works
 # v.0.2 - allowing cli options to override values
+# v.1.0 - added installer script - GM
 
 usage() { 
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
