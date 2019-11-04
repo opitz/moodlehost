@@ -6,7 +6,17 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 cp ./moodlehost /usr/local/bin/moodlehost
-cp ./moodlehost.conf /etc/moodlehost.conf
+
+# installing/updating the configuration file
+if [ -f /etc/moodlehost.conf ]
+	then
+	echo "Found an existing '/etc/moodlehost.conf' file!."
+else
+	cp ./moodlehost.conf /etc/moodlehost.conf
+	sudo chmod 755 /etc/moodlehost.conf
+	echo "A '/etc/moodlehost.conf' file has been placed and needs to be configured in order to finish the initial setup."
+fi
+
 
 echo "Please press any key to open that file with an editor, make any necessay changes and save them."
 echo "The setup will continue after you have closed the editor."
