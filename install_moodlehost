@@ -6,7 +6,14 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 cp ./moodlehost /usr/local/bin/moodlehost
-cp ./moodlehost.conf /etc/moodlehost.conf
+if [ ! -f /etc/moodlehost.conf ]
+	then
+	cp ./moodlehost.conf /etc/moodlehost.conf
+	echo "New /etc/moodlehost.conf added!"
+else
+	echo "Existing /etc/moodlehost.conf found!"
+fi
+
 
 echo "Please press any key to open that file with an editor, make any necessay changes and save them."
 echo "The setup will continue after you have closed the editor."
