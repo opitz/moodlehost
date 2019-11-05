@@ -109,13 +109,18 @@ dockername="moodlehost-${port}"
 
 if [ "$1" == "start" ]
 then
-	mkdir ${moodledata}
 	if [ ! -d $moodledata ]
 	then
-		echo "ERROR! Cannot create $moodledata directory - aborting!"
-		exit 1
+		mkdir ${moodledata}
+		chmod -R 777 $moodledata
+		if [ ! -d $moodledata ]
+		then
+			echo "ERROR! Cannot create $moodledata directory - aborting!"
+			exit 1
+		else
+			echo "$moodledata directory created"
+		fi
 	fi
-	chmod -R 777 $moodledata
 
 	docker rm -f $dockername >/dev/null 2>/dev/null
 	docker run -d -p ${port}:80 \
