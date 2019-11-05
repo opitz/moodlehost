@@ -33,5 +33,4 @@ Available commands are:
 	moodlehost <options> purge: remnove all moodledata for the given moodlehost server
 
 	<hr>
-	v.1.0 2019-11-04
-	
+	v.1.1 2019-11-04
