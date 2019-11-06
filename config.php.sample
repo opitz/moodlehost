@@ -7,18 +7,18 @@ $CFG = new stdClass();
 $CFG->dbtype    = 'mysqli';
 $CFG->dblibrary = 'native';
 $CFG->dbhost    = 'db_host';
-$CFG->dbname    = 'mo_moodle_37';
+$CFG->dbname    = 'qmplus';
 $CFG->dbuser    = 'moodle_user';
 $CFG->dbpass    = 'moodle';
 $CFG->prefix    = 'mdl_';
 $CFG->dboptions = array (
-  'dbpersist' => 0,
-  'dbport' => '',
-  'dbsocket' => '',
-  'dbcollation' => 'utf8mb4_unicode_ci',
+    'dbpersist' => 0,
+    'dbport' => '',
+    'dbsocket' => '',
+//    'dbcollation' => 'utf8mb4_unicode_ci',
 );
 
-$CFG->wwwroot   = 'http://localhost';
+$CFG->wwwroot   = 'http://localhost:'.$_SERVER['SERVER_PORT'];
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
 
