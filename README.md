@@ -1,10 +1,9 @@
 # MoodleHost
 
 ## What is this?
-MoodleHost is based on the Docker image mooldehq/moolde-php-apache and adds xdebug with sessionkey PHPSTORM. 
-It provides a Apache web server with all the trimmings ready to run a Moodle environment for development or testing.
+MoodleHost provides a simple CLI command to run an Apache web server with all the trimmings ready to run a Moodle environment for development or testing. It is based on the Docker image mooldehq/moolde-php-apache and adds xdebug with sessionkey PHPSTORM. 
 
-<b style="color: #ff0000;">ATTENTION:</b> The resulting web server is by no means secure. Never use it for production environments!
+<b>ATTENTION:</b> The resulting web server is by no means secure. Never use it for production environments!
 
 
 ## Preliminaries
