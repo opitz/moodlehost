@@ -23,7 +23,7 @@ There are several options available when running moodlehost from a command line:
 
 	-f <path/to/filedir>: Mapping an existing filedir repository on the host into /var/www/moodledata/filedir.
 
-	-m <path-to-moodledata>: By default moodlehost will create/use a folder 'moodledata' within the hosted directory. With this option a different location may be used.
+	-m <path/to/moodledata>: By default moodlehost will create/use a folder 'moodledata' within the hosted directory. With this option a different location may be used.
 
 	-p <port>: The port the Apache web server will be using. (default = 80)
 
