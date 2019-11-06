@@ -36,7 +36,7 @@ To use moodlehost simply change into the directory you want to host. There you m
 
 Now point your browser to "http://localhost[:port]" to see the resulting web page.
 
-<b>Please note:</b> the resulting Docker container will be named 'moodlehost-<port>'. When using a different port value other than the default one you will need to use the same option to stop the server again or purge it's moodledata (see below).
+<b>Please note:</b> the resulting Docker container will be named '<code>moodlehost-<port></code>'. When using a different port value other than the default one you will need to use the same option to stop the server again or purge it's moodledata (see below).
 
 Available commands are:
 
