@@ -40,7 +40,7 @@ Now point your browser to "http://localhost[:port]" to see the resulting web pag
 
 Available commands are:
 
-	moodlehost <options> start: start moddlehost server
+	moodlehost <options> start: start moodlehost server
 
 	moodlehost <options> stop: stop given moodlehost server
 
