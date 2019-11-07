@@ -10,9 +10,9 @@ MoodleHost provides a simple CLI command to run an Apache web server with all th
 You need to have Docker installed to use MoodleHost.
 
 ## Installation
-To install MoodleHost on you need to run the install_moodlehost script as superuser (e.g. <i>$ sudo ./install_moodlehost</i>). 
+To install MoodleHost on you need to run the install_moodlehost script as superuser (e.g. <code>$ sudo ./install_moodlehost</code>). 
 
-This will place the moodlehost into <i>/usr/local/bin/moodlehost</i> and the configuration file into <code>/etc/moodlehost.conf</code>.
+This will place the moodlehost into <code>/usr/local/bin/moodlehost</code> and the configuration file into <code>/etc/moodlehost.conf</code>.
 
 During the installation you will be promted to edit the moodlehost configuration file (/etc/moodlehost.conf). The configiuration file allows to set default values for the installation like the port and PHP version used. Values in moodlehost.conf may be overridden by options when running the moodlehost command
 
@@ -39,7 +39,7 @@ The available options are:
 	-w <path/to/webroot>: Set path to the webroot directory (default = $PWD)
 
 ## Usage
-To use moodlehost simply change into the directory you want to host. There you may issue '<i>$ moodlehost start</i>' to start a server with default values (as of /etc/moodlehost.conf).
+To use moodlehost simply change into the directory you want to host. There you may issue '<code>$ moodlehost start</code>' to start a server with default values (as of /etc/moodlehost.conf).
 
 Now point your browser to "http://localhost" to see the resulting web page.
 
@@ -55,4 +55,4 @@ Available commands are:
 
 	
 <hr>
-v.1.2 2019-11-06
+v.1.2 2019-11-07
