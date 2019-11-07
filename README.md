@@ -16,7 +16,11 @@ To install MoodleHost on you need to run the install_moodlehost script as superu
 The configuration file will be installed into /etc/moodlehost.conf and contains the default values when running moodlehost without options.
 
 ## the moodlehost command
-There are several options available when running moodlehost from a command line:
+The basic CLI command is
+
+	$ moodlehost [<options>] start / stop / purge
+	
+The available options are:
 
 	-d <database-server-ip-address>: This will determine the IP address of the mysql database server. Inside moodlehost this address is then mapped to 'db_host'.
 
@@ -33,7 +37,7 @@ There are several options available when running moodlehost from a command line:
 ## Usage
 To use moodlehost simply change into the directory you want to host. There you may issue '<i>$ moodlehost start</i>' to start a server with default values (as of /etc/moodlehost.conf).
 
-Now point your browser to "http://localhost[:port]" to see the resulting web page.
+Now point your browser to "http://localhost" to see the resulting web page.
 
 <b>Please note:</b> the resulting Docker container will be named '<code>moodlehost-\<port></code>'. When using a different port value other than the default one you will need to use the same option to stop the server again or purge it's moodledata (see below).
 
@@ -45,5 +49,6 @@ Available commands are:
 
 	moodlehost <options> purge: remove all moodledata but the filedir for the given moodlehost server
 
-	<hr>
-	v.1.2 2019-11-06
+	
+<hr>
+v.1.2 2019-11-06
