@@ -31,7 +31,7 @@ The available options are:
 
 	-p <port>: The port the Apache web server will be using. (default = 80)
 
-	-v <php-version>: Set the PHP version that will be used. Valid values are: 5.6, 7.0, 7.1, 7.2, 7.3 (default = 7.3)
+	-v <php-version>: Set the PHP version that will be used. Valid values are: 7.0, 7.1, 7.2, 7.3 (default = 7.3)
 
 	-w <path/to/webroot>: Set path to the webroot directory (default = $PWD)
 
