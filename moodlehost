@@ -23,7 +23,7 @@ help() {
 	echo "-h this help page"
 	echo "-m <moodledata>: set path on host(!) to moodledata (default is $PWD/moodledata)"
 	echo "-p <port>: set the port number used by Apache (default=80)"	
-	echo "-v <php_version>: select the PHP version (default=7.3, allowed values: 5.6, 7.0, 7.1, 7.2, 7.3)"
+	echo "-v <php_version>: select the PHP version (default=7.3, allowed values: 7.0, 7.1, 7.2, 7.3)"
 	echo "-w <webroot>: set the path to the webroot directory (default: $PWD)"
 	exit 1;
 }
@@ -70,7 +70,7 @@ done
 shift $((OPTIND-1))
 
 # default values
-php_options=(5.6 7.0 7.1 7.2 7.3)
+php_options=(7.0 7.1 7.2 7.3)
 port=80
 moodledata=$PWD/moodledata
 db_host=127.0.0.1
