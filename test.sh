@@ -38,7 +38,7 @@ function check_container() {
 #declare -a theList
 # get a list of running docker containers
 echo ' '
-echo 'moodlehost status - v.1.3'
+echo 'moodlehost status - testing'
 theList=$(docker ps -q)
 
 containerNames=$(docker ps --format "{{.Names}}")
