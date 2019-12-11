@@ -5,7 +5,7 @@ MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 RUN pecl install xdebug
-RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so" >> /usr/local/etc/php/php.ini
+RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20151012/xdebug.so" >> /usr/local/etc/php/php.ini
 RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
 
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini && \
