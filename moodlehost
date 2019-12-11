@@ -10,8 +10,9 @@
 # v.1.1 - allowing to specify path to webroot
 # v.1.2 - allowing to specify path to filedir
 # v.1.3 - added status report
+# v.1.4 - added support for PHP 7.4
 
-version=1.3
+version=1.4
 
 usage() { 
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
@@ -112,7 +113,7 @@ done
 shift $((OPTIND-1))
 
 # default values
-php_options=(7.0 7.1 7.2 7.3)
+php_options=(7.0 7.1 7.2 7.3 7.4)
 port=80
 moodledata=$PWD/moodledata
 db_host=127.0.0.1
