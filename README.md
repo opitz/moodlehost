@@ -56,4 +56,4 @@ Available commands are:
 To allow to run a moodle instance on any allowed port the settig for $CFG->wwwroot needs to be amended as shown in this example. You may copy and modify it according to your setup. In this case please note as the IP address of the database server is mapped to 'db_host' inside the Docker container you may always address the $CFG->dbhost with this, as shown in the sample.
 
 <hr>
-v.1.2 2019-11-15
+v.1.4 2019-12-12
