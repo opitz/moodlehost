@@ -1,10 +1,10 @@
 FROM moodlehq/moodle-php-apache:7.3
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.0.1 - 2019-12-11
+# v.1.0.2 - 2019-12-16
 
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-RUN pecl install xdebug
+RUN pecl install xdebug-2.8.1
 RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20180731/xdebug.so" >> /usr/local/etc/php/php.ini
 RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
 
