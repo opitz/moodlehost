@@ -19,7 +19,7 @@ During the installation you will be prompted to edit the moodlehost configuratio
 ## the moodlehost command
 The basic CLI command is
 
-	$ moodlehost [<options>] start / stop / purge
+	$ moodlehost [<options>] start / stop / purge /status
 	
 The available options are:
 
@@ -50,8 +50,10 @@ Available commands are:
 
 	moodlehost <options> purge: remove all moodledata but the filedir for the given moodlehost server
 
+	moodlehost status: return a status message for every moodlehost instance running
+
 ### config.php.sample
 To allow to run a moodle instance on any allowed port the settig for $CFG->wwwroot needs to be amended as shown in this example. You may copy and modify it according to your setup. In this case please note as the IP address of the database server is mapped to 'db_host' inside the Docker container you may always address the $CFG->dbhost with this, as shown in the sample.
 
 <hr>
-v.1.2 2019-11-15
+v.1.4 2019-12-12
