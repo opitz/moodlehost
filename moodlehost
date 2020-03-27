@@ -178,14 +178,14 @@ then
 	docker rm -f $dockername >/dev/null 2>/dev/null
 	if [ "$filedir" == "" ]
 	then
-		docker run -d -p ${port}:80 \
+		docker run -d -p ${port}:80 --network host \
 			--name $dockername \
 			-v ${webroot}:/var/www/html \
 			-v ${moodledata}:/var/www/moodledata \
 			--add-host db_host:${db_host} \
 		qmulits/moodlehost:${php}
 	else
-		docker run -d -p ${port}:80 \
+		docker run -d -p ${port}:80 --network host \
 			--name $dockername \
 			-v ${webroot}:/var/www/html \
 			-v ${moodledata}:/var/www/moodledata \
