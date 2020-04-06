@@ -1,6 +1,6 @@
 FROM moodlehq/moodle-php-apache:7.1
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
-# v.1.0.2 - 2019-12-16
+# v.1.0.3 - 2019-12-19
 
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
@@ -15,6 +15,9 @@ RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.remote_port=9000" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /usr/local/etc/php/php.ini
+
+RUN pecl install mcrypt-1.0.0
+RUN echo "extension=mcrypt.so" >> /usr/local/etc/php/php.ini
 
 #RUN ls /etc/init.d/apache2
 RUN service apache2 start &
