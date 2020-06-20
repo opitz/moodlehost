@@ -11,8 +11,9 @@
 # v.1.2 - allowing to specify path to filedir
 # v.1.3 - added status report
 # v.1.4 - added support for PHP 7.4
+# v.1.5 - added correct path to moodledate for non-default webroot
 
-version=1.4
+version=1.5
 
 usage() { 
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
@@ -137,11 +138,6 @@ then
 	filedir=$f
 fi
 
-if [ "$m" != "" ]
-then
-	moodledata=$m
-fi
-
 if [ "$p" != "" ]
 then
 	port=$p
@@ -155,6 +151,12 @@ fi
 if [ "$w" != "" ]
 then
 	webroot=$w
+	moodledata=$webroot/moodledata
+fi
+
+if [ "$m" != "" ]
+then
+	moodledata=$m
 fi
 
 dockername="moodlehost-${port}"
@@ -220,6 +222,10 @@ fi
 
 if [ "$1" == "purge" ]
 then
+	if [[ ! -d ${moodledata} ]]; then
+		echo "No moodledata found at $moodledata - aborting!"
+		exit 1
+	fi
 	rm -rf ${moodledata}/cache
 	rm -rf ${moodledata}/localcache
 	rm -rf ${moodledata}/lock
