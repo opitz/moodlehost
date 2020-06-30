@@ -193,7 +193,8 @@ then
 			--add-host db_host:${db_host} \
 		qmulits/moodlehost:${php}
 	fi
-
+	docker exec -it $dockername rm -f /var/log/apache2/*
+	docker exec -it $dockername apachectl graceful
 	echo "==> $dockername with PHP version $php (re-)started on port $port using ${webroot} as web root"
 fi
 
