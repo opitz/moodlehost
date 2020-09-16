@@ -17,8 +17,8 @@ RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.remote_host=172.17.0.1" >> /usr/local/etc/php/php.ini
 
 RUN	pecl update-channels && yes "" | pecl install -f channel://pecl.php.net/mcrypt-1.0.1
-RUN	echo "extension=mcrypt.so" > /usr/local/etc/php/php.ini
-RUN 	sed -i 's/128M/1G/g' $(php -i|grep 'php.ini' | grep Loaded | grep -oE '[^ ]+$')
+RUN	echo "extension=mcrypt.so" >> /usr/local/etc/php/php.ini
+RUN 	sed -i 's/128M/1G/g' /usr/local/etc/php/php.ini
 #RUN ls /etc/init.d/apache2
 RUN service apache2 start &
 
