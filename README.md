@@ -19,7 +19,7 @@ During the installation you will be prompted to edit the moodlehost configuratio
 ## the moodlehost command
 The basic CLI command is
 
-	$ moodlehost [<options>] start / stop / purge /status
+	$ moodlehost [<options>] start / stop / purge / status
 	
 The available options are:
 
@@ -31,7 +31,7 @@ The available options are:
 
 	-p <port>: The port the Apache web server will be using. (default = 80)
 
-	-v <php-version>: Set the PHP version that will be used. Valid values are: 7.0, 7.1, 7.2, 7.3 (default = 7.3)
+	-v <php-version>: Set the PHP version that will be used. Valid values are: 7.0, 7.1, 7.2, 7.3, 7.4 (default = 7.2)
 
 	-w <path/to/webroot>: Set path to the webroot directory (default = $PWD)
 
