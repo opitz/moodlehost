@@ -19,7 +19,7 @@ During the installation you will be prompted to edit the moodlehost configuratio
 ## the moodlehost command
 The basic CLI command is
 
-	$ moodlehost [<options>] start / stop / purge /status
+	$ moodlehost [<options>] start / stop / purge / status
 	
 The available options are:
 
