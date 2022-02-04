@@ -42,7 +42,7 @@ function check_container() {
 
 #		get the HTTP port for this container
 		port=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "80/tcp") 0).HostPort}}' $c_name)
-	 	echo 'HTTP listening on port: '$port
+		echo 'HTTP listening on port: '$port
 
 #		show db_host IP address
 		db_host=$(docker inspect $c_name | grep 'db_host')
@@ -57,10 +57,10 @@ function check_container() {
 		i=0
 		for v_source in ${vs_array[@]}
 		do
-	 		if [[ $v_source != *"Source"* ]]; then
-		 		echo "    "$v_source' ==> '${vd_array[$i]}
-		 	fi
-		 	((i++))
+			if [[ $v_source != *"Source"* ]]; then
+			echo "    "$v_source' ==> '${vd_array[$i]}
+			fi
+			((i++))
 		done
 
 #		show php version
@@ -83,7 +83,7 @@ then
 fi
 
 # get options
-while getopts ":d:f:h:m:p:v:w:" x; do
+while getopts ":d:f:h:m:n:p:v:w:" x; do
     case "${x}" in
         d)
             d=${OPTARG}
@@ -97,15 +97,18 @@ while getopts ":d:f:h:m:p:v:w:" x; do
         m)
             m=${OPTARG}
             ;;
+        n)
+            n=${OPTARG}
+            ;;
         p)
             p=${OPTARG}
             ;;
-    	v)  
+	v)  
             v=${OPTARG}
-	       ;;
-    	w)  
+	    ;;
+	w)  
             w=${OPTARG}
-	       ;;
+	    ;;
         *)
             usage
             ;;
@@ -159,6 +162,11 @@ then
 	moodledata=$m
 fi
 
+if [ "$n" == "host" ]
+then
+	network=$n
+fi
+
 dockername="moodlehost-${port}"
 
 
@@ -174,26 +182,50 @@ then
 			exit 1
 		else
 			echo "$moodledata directory created"
+			ls -la $moodledata
 		fi
 	fi
 
 	docker rm -f $dockername >/dev/null 2>/dev/null
 	if [ "$filedir" == "" ]
 	then
-		docker run -d -p ${port}:80 \
-			--name $dockername \
-			-v ${webroot}:/var/www/html \
-			-v ${moodledata}:/var/www/moodledata \
-			--add-host db_host:${db_host} \
-		qmulits/moodlehost:${php}
+		if [ "$network" == "host" ]
+		then
+			docker run -d -p ${port}:80 \
+				--name $dockername \
+				--network host \
+				-v ${webroot}:/var/www/html \
+				-v ${moodledata}:/var/www/moodledata \
+				--add-host db_host:${db_host} \
+			qmulits/moodlehost:${php}
+		else
+                        docker run -d -p ${port}:80 \
+                                --name $dockername \
+                                -v ${webroot}:/var/www/html \
+                                -v ${moodledata}:/var/www/moodledata \
+                                --add-host db_host:${db_host} \
+                        qmulits/moodlehost:${php}
+		fi
 	else
-		docker run -d -p ${port}:80 \
-			--name $dockername \
-			-v ${webroot}:/var/www/html \
-			-v ${moodledata}:/var/www/moodledata \
-			-v ${filedir}:/var/www/moodledata/filedir \
-			--add-host db_host:${db_host} \
-		qmulits/moodlehost:${php}
+		if [ "$network" == "host" ]
+		then
+			docker run -d -p ${port}:80 \
+				--name $dockername \
+				--network host \
+				-v ${webroot}:/var/www/html \
+				-v ${moodledata}:/var/www/moodledata \
+				-v ${filedir}:/var/www/moodledata/filedir \
+				--add-host db_host:${db_host} \
+			qmulits/moodlehost:${php}
+		else
+                        docker run -d -p ${port}:80 \
+                                --name $dockername \
+                                -v ${webroot}:/var/www/html \
+                                -v ${moodledata}:/var/www/moodledata \
+                                -v ${filedir}:/var/www/moodledata/filedir \
+                                --add-host db_host:${db_host} \
+                        qmulits/moodlehost:${php}
+		fi
 	fi
 
 	echo "==> $dockername with PHP version $php (re-)started on port $port using ${webroot} as web root"
