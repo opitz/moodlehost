@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to run an Apache instance with all trimmings to run or develop a Moodle environment
-# IMPORTANT! The provided server is by no means secure and shouild never be used in a production environment! 
+# IMPORTANT! The provided server is by no means secure and shouild never be used in a production environment!
 # m.opitz@qmul.ac.uk | 2019-11-04
 
 # v.0.1 - works
@@ -12,22 +12,24 @@
 # v.1.3 - added status report
 # v.1.4 - added support for PHP 7.4
 # v.1.5 - added correct path to moodledate for non-default webroot
+# v.1.6 - added '-n host' option to use host network
 
-version=1.5
+version=1.6
 
-usage() { 
-	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
-	exit 1; 
+usage() {
+	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
+	exit 1;
 }
 
 help() {
-	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2; 
+	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
 	echo "available options:"
 	echo "-d <db_host_ip>: set the IP address of the database server (default = 127.0.0.1)"
 	echo "-f <path_to_filedir>: map an existing filedir repository into /var/www/moodledata/filedir"
 	echo "-h this help page"
 	echo "-m <moodledata>: set path on host(!) to moodledata (default is $PWD/moodledata)"
-	echo "-p <port>: set the port number used by Apache (default=80)"	
+	echo "-n host: forcing docker to use the host network"
+	echo "-p <port>: set the port number used by Apache (default=80)"
 	echo "-v <php_version>: select the PHP version (default=7.3, allowed values: 7.0, 7.1, 7.2, 7.3)"
 	echo "-w <webroot>: set the path to the webroot directory (default: $PWD)"
 	exit 1;
@@ -46,7 +48,7 @@ function check_container() {
 
 #		show db_host IP address
 		db_host=$(docker inspect $c_name | grep 'db_host')
-		echo $db_host	
+		echo $db_host
 
 #		get arrays of mapped volume sources and destinations
 		vs_array=($(echo $(docker inspect $c_name | grep "Source") | tr " " "\n"))
@@ -68,7 +70,7 @@ function check_container() {
 		docker exec $c_name php -v
 
 #		show xdebug status
-		docker exec $c_name php -i | grep 'xdebug support'		
+		docker exec $c_name php -i | grep 'xdebug support'
 		docker exec $c_name php -i | grep 'xdebug.idekey'
 	fi
 }
@@ -103,10 +105,10 @@ while getopts ":d:f:h:m:n:p:v:w:" x; do
         p)
             p=${OPTARG}
             ;;
-	v)  
+	v)
             v=${OPTARG}
 	    ;;
-	w)  
+	w)
             w=${OPTARG}
 	    ;;
         *)
@@ -265,6 +267,6 @@ then
 	rm -rf ${moodledata}/sessions
 	rm -rf ${moodledata}/temp
 	rm -rf ${moodledata}/trashdir
-	
+
 	echo "==> $dockername: moodledata purged"
 fi
