@@ -229,7 +229,10 @@ then
                         qmulits/moodlehost:${php}
 		fi
 	fi
-
+	docker exec -it $dockername bash -c "sed -i 's/time = 30/time = 3000/g' /usr/local/etc/php/php.ini"
+	docker exec -it $dockername bash -c "echo 'ServerName moodle' >> /etc/apache2/apache2.conf"
+	docker exec -it $dockername bash -c 'rm -f /var/log/apache2/*'
+	docker exec -it $dockername apachectl graceful
 	echo "==> $dockername with PHP version $php (re-)started on port $port using ${webroot} as web root"
 fi
 
