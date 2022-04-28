@@ -18,11 +18,23 @@ $CFG->dboptions = array (
 //    'dbcollation' => 'utf8mb4_unicode_ci',
 );
 
-$CFG->wwwroot   = 'http://localhost:'.$_SERVER['SERVER_PORT'];
+$CFG->wwwroot   = 'http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
 
 $CFG->directorypermissions = 0777;
+
+// This is for jMeter testing
+$CFG->tool_generator_users_password = 'testing';
+
+if(!isset($CFG->mis_host)){
+// MIS common configuration
+    $CFG->mis_host = $CFG->dbhost;
+    $CFG->mis_dbase = 'qmu_mis';
+    $CFG->mis_dbtype = 'mysqli';
+    $CFG->mis_user = 'moodle_user';
+    $CFG->mis_pass = 'moodle';
+}
 
 require_once(__DIR__ . '/lib/setup.php');
 

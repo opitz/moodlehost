@@ -19,21 +19,18 @@ During the installation you will be prompted to edit the moodlehost configuratio
 ## the moodlehost command
 The basic CLI command is
 
-	$ moodlehost [<options>] start / stop / purge /status
+	$ moodlehost [<options>] start / stop / purge / status
 	
 The available options are:
 
-	-d <database-server-ip-address>: This will determine the IP address of the mysql database server. Inside moodlehost this address is then mapped to 'db_host'.
-
-	-f <path/to/filedir>: Mapping an existing filedir repository on the host into /var/www/moodledata/filedir.
-
-	-m <path/to/moodledata>: By default moodlehost will create/use a folder 'moodledata' within the hosted directory. With this option a different location may be used.
-
-	-p <port>: The port the Apache web server will be using. (default = 80)
-
-	-v <php-version>: Set the PHP version that will be used. Valid values are: 7.0, 7.1, 7.2, 7.3 (default = 7.3)
-
-	-w <path/to/webroot>: Set path to the webroot directory (default = $PWD)
+	-d <db_host_ip>: set the IP address of the database server (default = 127.0.0.1)
+	-f <path_to_filedir>: map an existing filedir repository into /var/www/moodledata/filedir
+	-h : a help page
+	-m <moodledata>: set path on host(!) to moodledata (default is $PWD/moodledata)
+	-n host: forcing docker to use the host network
+	-p <port>: set the port number used by Apache (default=80)
+	-v <php_version>: select the PHP version (default=7.2, allowed values: 7.2, 7.3, 7.4)
+	-w <webroot>: set the path to the webroot directory (default: $PWD)
 
 ## Usage
 To use moodlehost simply change into the directory you want to host. There you may issue '<code>$ moodlehost start</code>' to start a server with default values (as of /etc/moodlehost.conf).
@@ -53,7 +50,7 @@ Available commands are:
 	moodlehost status: return a status message for every moodlehost instance running
 
 ### config.php.sample
-To allow to run a moodle instance on any allowed port the settig for $CFG->wwwroot needs to be amended as shown in this example. You may copy and modify it according to your setup. In this case please note as the IP address of the database server is mapped to 'db_host' inside the Docker container you may always address the $CFG->dbhost with this, as shown in the sample.
+To allow to run a Moodle instance on any allowed port the setting for $CFG->wwwroot needs to be amended as shown in the<code>config.php.sample</code>file. You may copy and modify it according to your setup. In this case please note as the IP address of the database server is mapped to 'db_host' inside the Docker container you may always address the<code>$CFG->dbhost</code>with this, as shown in the sample.
 
 <hr>
-v.1.4 2019-12-12
+v.1.6 2022-02-04
