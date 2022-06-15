@@ -13,8 +13,9 @@
 # v.1.4 - added support for PHP 7.4
 # v.1.5 - added correct path to moodledate for non-default webroot
 # v.1.6 - added '-n host' option to use host network
+# v.1.7 - 2022-06-14 now using opitz/moodlehost image from Docker Hub
 
-version=1.6
+version=1.7
 
 usage() {
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -24,13 +25,13 @@ usage() {
 help() {
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
 	echo "available options:"
-	echo "-d <db_host_ip>: set the IP address of the database server (default = 127.0.0.1)"
+	echo "-d <db_host_ip>: set the IP address of the database server (default: 127.0.0.1)"
 	echo "-f <path_to_filedir>: map an existing filedir repository into /var/www/moodledata/filedir"
 	echo "-h this help page"
-	echo "-m <moodledata>: set path on host(!) to moodledata (default is $PWD/moodledata)"
+	echo "-m <moodledata>: set path on host(!) to moodledata (default: $PWD/moodledata)"
 	echo "-n host: forcing docker to use the host network"
-	echo "-p <port>: set the port number used by Apache (default=80)"
-	echo "-v <php_version>: select the PHP version (default=7.3, allowed values: 7.0, 7.1, 7.2, 7.3)"
+	echo "-p <port>: set the port number used by Apache (default: 80)"
+	echo "-v <php_version>: select the PHP version (default: 7.3, allowed values: 7.1, 7.2, 7.3, 7.4)"
 	echo "-w <webroot>: set the path to the webroot directory (default: $PWD)"
 	exit 1;
 }
@@ -199,14 +200,14 @@ then
 				-v ${webroot}:/var/www/html \
 				-v ${moodledata}:/var/www/moodledata \
 				--add-host db_host:${db_host} \
-			qmulits/moodlehost:${php}
+			opitz/moodlehost:${php}
 		else
-                        docker run -d -p ${port}:80 \
-                                --name $dockername \
-                                -v ${webroot}:/var/www/html \
-                                -v ${moodledata}:/var/www/moodledata \
-                                --add-host db_host:${db_host} \
-                        qmulits/moodlehost:${php}
+      docker run -d -p ${port}:80 \
+        --name $dockername \
+        -v ${webroot}:/var/www/html \
+        -v ${moodledata}:/var/www/moodledata \
+        --add-host db_host:${db_host} \
+      opitz/moodlehost:${php}
 		fi
 	else
 		if [ "$network" == "host" ]
@@ -218,15 +219,15 @@ then
 				-v ${moodledata}:/var/www/moodledata \
 				-v ${filedir}:/var/www/moodledata/filedir \
 				--add-host db_host:${db_host} \
-			qmulits/moodlehost:${php}
+			opitz/moodlehost:${php}
 		else
-                        docker run -d -p ${port}:80 \
-                                --name $dockername \
-                                -v ${webroot}:/var/www/html \
-                                -v ${moodledata}:/var/www/moodledata \
-                                -v ${filedir}:/var/www/moodledata/filedir \
-                                --add-host db_host:${db_host} \
-                        qmulits/moodlehost:${php}
+      docker run -d -p ${port}:80 \
+        --name $dockername \
+        -v ${webroot}:/var/www/html \
+        -v ${moodledata}:/var/www/moodledata \
+        -v ${filedir}:/var/www/moodledata/filedir \
+        --add-host db_host:${db_host} \
+      opitz/moodlehost:${php}
 		fi
 	fi
 

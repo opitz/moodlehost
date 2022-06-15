@@ -1,10 +1,10 @@
 FROM moodlehq/moodle-php-apache:5.6
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 # v.0.1 - 2019-11-06
-
+# v.0.2 - 2020-09-09 - xdebug no longer supported?!
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-RUN pecl install xdebug
+#RUN pecl install xdebug
 RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20170718/xdebug.so" >> /usr/local/etc/php/php.ini
 RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
 
