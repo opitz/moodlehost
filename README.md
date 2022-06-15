@@ -29,7 +29,7 @@ The available options are:
 	-m <moodledata>: set path on host(!) to moodledata (default is $PWD/moodledata)
 	-n host: forcing docker to use the host network
 	-p <port>: set the port number used by Apache (default=80)
-	-v <php_version>: select the PHP version (default=7.2, allowed values: 7.2, 7.3, 7.4)
+	-v <php_version>: select the PHP version (default=7.3, allowed values: 7.1, 7.2, 7.3, 7.4, 8.0)
 	-w <webroot>: set the path to the webroot directory (default: $PWD)
 
 ## Usage
@@ -53,4 +53,4 @@ Available commands are:
 To allow to run a Moodle instance on any allowed port the setting for $CFG->wwwroot needs to be amended as shown in the<code>config.php.sample</code>file. You may copy and modify it according to your setup. In this case please note as the IP address of the database server is mapped to 'db_host' inside the Docker container you may always address the<code>$CFG->dbhost</code>with this, as shown in the sample.
 
 <hr>
-v.1.6 2022-02-04
+v.1.7 2022-06-15
