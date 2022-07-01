@@ -14,7 +14,7 @@ RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.discover_client_host = 1" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.client_host = 127.0.0.1" >> /usr/local/etc/php/php.ini && \
-	echo "xdebug.client_port = 9000" >> /usr/local/etc/php/php.ini
+	echo "xdebug.client_port = 9003" >> /usr/local/etc/php/php.ini
 
 # install php-excimer
 RUN pecl install excimer
