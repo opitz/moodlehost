@@ -14,8 +14,9 @@
 # v.1.5 - added correct path to moodledate for non-default webroot
 # v.1.6 - added '-n host' option to use host network
 # v.1.7 - 2022-06-14 now using opitz/moodlehost image from Docker Hub
+# v.1.8 - 2022-07-01 starting cron daemon using Docker exec as it will not start within the container
 
-version=1.7
+version=1.8
 
 usage() {
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -230,6 +231,10 @@ then
       opitz/moodlehost:${php}
 		fi
 	fi
+
+  # start cron daemon in the container that just started
+  # this is needed because cron will not start within the container
+  docker exec -it $dockername cron
 
 	echo "==> $dockername with PHP version $php (re-)started on port $port using ${webroot} as web root"
 fi
