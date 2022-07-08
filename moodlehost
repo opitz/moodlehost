@@ -15,8 +15,9 @@
 # v.1.6 - added '-n host' option to use host network
 # v.1.7 - 2022-06-14 now using opitz/moodlehost image from Docker Hub
 # v.1.8 - 2022-07-01 starting cron daemon using Docker exec as it will not start within the container
+# v.1.9 - 2022-07-01 adding local xdebug option for macOS/PHPStorm
 
-version=1.8
+version=1.9
 
 usage() {
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -29,6 +30,7 @@ help() {
 	echo "-d <db_host_ip>: set the IP address of the database server (default: 127.0.0.1)"
 	echo "-f <path_to_filedir>: map an existing filedir repository into /var/www/moodledata/filedir"
 	echo "-h this help page"
+	echo "-l local xdebug for macOS/PHPStorm"
 	echo "-m <moodledata>: set path on host(!) to moodledata (default: $PWD/moodledata)"
 	echo "-n host: forcing docker to use the host network"
 	echo "-p <port>: set the port number used by Apache (default: 80)"
@@ -87,7 +89,7 @@ then
 fi
 
 # get options
-while getopts ":d:f:h:m:n:p:v:w:" x; do
+while getopts ":d:f:h:lm:n:p:v:w:" x; do
     case "${x}" in
         d)
             d=${OPTARG}
@@ -97,6 +99,9 @@ while getopts ":d:f:h:m:n:p:v:w:" x; do
             ;;
         h)
             h=${OPTARG}
+            ;;
+        l)
+            localxdebug=1
             ;;
         m)
             m=${OPTARG}
@@ -231,6 +236,16 @@ then
       opitz/moodlehost:${php}
 		fi
 	fi
+
+  # apply local xdebug settings for macOS/PHPStorm
+  if [ "$localxdebug" == "1" ]
+  then
+    ipaddr=$(ipconfig getifaddr en0)
+    docker exec -it moodlehost-$port sed -i 's/xdebug.discover_client_host = 1/xdebug.discover_client_host = 0/' /usr/local/etc/php/php.ini
+    docker exec -it moodlehost-$port sed -i "s/xdebug.client_host = 127.0.0.1/xdebug.client_host = $ipaddr/" /usr/local/etc/php/php.ini
+    docker exec -it moodlehost-$port service apache2 graceful > /dev/null 2>&1
+    echo "==> local xdebug setup for IP $ipaddr active."
+  fi
 
   # start cron daemon in the container that just started
   # this is needed because cron will not start within the container
