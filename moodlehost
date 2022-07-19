@@ -18,12 +18,13 @@
 # v.1.9 - 2022-07-01 adding local xdebug option for macOS/PHPStorm
 # v.1.9.1 - 2022-07-14 adding PHP version 8.1 | making PHP 8.0 the default default
 # v.1.9.2 - 2022-07-19 cleaned up echo response when creating moodledata folder
-# v.1.9.3 - 2022-07-19 added option to NOT create a moodledata directory
+# v.2.0 - 2022-07-19 added option to NOT create a moodledata directory
 
-version=1.9.3
+version=2.0
 
 usage() {
-	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
+	echo "Usage: moodlehost [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
+	echo "Try 'multihost -h' for more help."
 	exit 1;
 }
 
