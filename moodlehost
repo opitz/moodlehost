@@ -18,8 +18,9 @@
 # v.1.9 - 2022-07-01 adding local xdebug option for macOS/PHPStorm
 # v.1.9.1 - 2022-07-14 adding PHP version 8.1 | making PHP 8.0 the default default
 # v.1.9.2 - 2022-07-19 cleaned up echo response when creating moodledata folder
+# v.1.9.3 - 2022-07-19 added option to NOT create a moodledata directory
 
-version=1.9.2
+version=1.9.3
 
 usage() {
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -34,6 +35,7 @@ help() {
 	echo "-h this help page"
 	echo "-l local xdebug for macOS/PHPStorm"
 	echo "-m <moodledata>: set path on host(!) to moodledata (default: $PWD/moodledata)"
+	echo "-m none: do NOT create a moodledata directory"
 	echo "-n host: forcing docker to use the host network"
 	echo "-p <port>: set the port number used by Apache (default: 80)"
 	echo "-v <php_version>: select the PHP version (default: 8.0, allowed values: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1)"
@@ -183,16 +185,19 @@ dockername="moodlehost-${port}"
 
 if [ "$1" == "start" ]
 then
-	if [ ! -d $moodledata ]
+	if [ "$moodledata" != "none" ]
 	then
-		mkdir ${moodledata}
-		chmod -R 777 $moodledata
 		if [ ! -d $moodledata ]
 		then
-			echo "==> ERROR! Cannot create $moodledata directory - aborting!"
-			exit 1
-		else
-			echo "==> $moodledata directory created"
+			mkdir ${moodledata}
+			chmod -R 777 $moodledata
+			if [ ! -d $moodledata ]
+			then
+				echo "==> ERROR! Cannot create $moodledata directory - aborting!"
+				exit 1
+			else
+				echo "==> $moodledata directory created"
+			fi
 		fi
 	fi
 
