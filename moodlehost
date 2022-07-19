@@ -16,8 +16,10 @@
 # v.1.7 - 2022-06-14 now using opitz/moodlehost image from Docker Hub
 # v.1.8 - 2022-07-01 starting cron daemon using Docker exec as it will not start within the container
 # v.1.9 - 2022-07-01 adding local xdebug option for macOS/PHPStorm
+# v.1.9.1 - 2022-07-14 adding PHP version 8.1 | making PHP 8.0 the default default
+# v.1.9.2 - 2022-07-19 cleaned up echo response when creating moodledata folder
 
-version=1.9
+version=1.9.2
 
 usage() {
 	echo "Usage: $0 [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -34,7 +36,7 @@ help() {
 	echo "-m <moodledata>: set path on host(!) to moodledata (default: $PWD/moodledata)"
 	echo "-n host: forcing docker to use the host network"
 	echo "-p <port>: set the port number used by Apache (default: 80)"
-	echo "-v <php_version>: select the PHP version (default: 7.3, allowed values: 7.1, 7.2, 7.3, 7.4, 8.0)"
+	echo "-v <php_version>: select the PHP version (default: 8.0, allowed values: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1)"
 	echo "-w <webroot>: set the path to the webroot directory (default: $PWD)"
 	exit 1;
 }
@@ -126,11 +128,11 @@ done
 shift $((OPTIND-1))
 
 # default values
-php_options=(7.1 7.2 7.3 7.4 8.0)
+php_options=(7.1 7.2 7.3 7.4 8.0 8.1)
 port=80
 moodledata=$PWD/moodledata
 db_host=127.0.0.1
-php=7.3
+php=8.0
 webroot=$PWD
 
 # default values may be overridden in a /etc/moodlehost.conf file
@@ -187,11 +189,10 @@ then
 		chmod -R 777 $moodledata
 		if [ ! -d $moodledata ]
 		then
-			echo "ERROR! Cannot create $moodledata directory - aborting!"
+			echo "==> ERROR! Cannot create $moodledata directory - aborting!"
 			exit 1
 		else
-			echo "$moodledata directory created"
-			ls -la $moodledata
+			echo "==> $moodledata directory created"
 		fi
 	fi
 
