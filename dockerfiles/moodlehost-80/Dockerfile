@@ -2,6 +2,7 @@ FROM moodlehq/moodle-php-apache:8.0
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 # v.1.0.0 - 2022-06-14
 # v.1.1.0 - 2022-07-01 - adding Moodle cron job
+# v.1.2.0 - 2022-07-26 - setting upload_max_filesize in php.ini to 800MB
 
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
@@ -27,6 +28,9 @@ RUN echo "extension=yaml.so" >> /usr/local/etc/php/php.ini
 
 # activate error log
 RUN echo "error_log = /var/www/html/error.log" >> /usr/local/etc/php/php.ini
+
+# set max filesize for uploads to 800MB - just in case...
+RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 800M/' /usr/local/etc/php/php.ini
 
 # enable Moodle cron jobs
 # install cron
