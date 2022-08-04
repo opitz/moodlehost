@@ -19,8 +19,9 @@
 # v.1.9.1 - 2022-07-14 adding PHP version 8.1 | making PHP 8.0 the default default
 # v.1.9.2 - 2022-07-19 cleaned up echo response when creating moodledata folder
 # v.2.0 - 2022-07-19 added option to NOT create a moodledata directory
+# v.2.0.1 - 2022-08-04 applying correct settings for local xdebug on a Mac using PHP 7.x.
 
-version=2.0
+version=2.0.1
 
 usage() {
 	echo "Usage: moodlehost [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -248,8 +249,13 @@ then
   if [ "$localxdebug" == "1" ]
   then
     ipaddr=$(ipconfig getifaddr en0)
+    # for PHP 8+
     docker exec -it moodlehost-$port sed -i 's/xdebug.discover_client_host = 1/xdebug.discover_client_host = 0/' /usr/local/etc/php/php.ini
     docker exec -it moodlehost-$port sed -i "s/xdebug.client_host = 127.0.0.1/xdebug.client_host = $ipaddr/" /usr/local/etc/php/php.ini
+    # for PHP 7.x
+    docker exec -it moodlehost-$port sed -i 's/xdebug.remote_connect_back=1/xdebug.remote_connect_back=0/' /usr/local/etc/php/php.ini
+    docker exec -it moodlehost-$port sed -i "s/xdebug.remote_host=172.17.0.1/xdebug.remote_host=$ipaddr/" /usr/local/etc/php/php.ini
+    # restart the apache2 server gracefully
     docker exec -it moodlehost-$port service apache2 graceful > /dev/null 2>&1
     echo "==> local xdebug setup for IP $ipaddr active."
   fi
@@ -257,8 +263,7 @@ then
   # start cron daemon in the container that just started
   # this is needed because cron will not start within the container
   docker exec -it $dockername cron
-
-	echo "==> $dockername with PHP version $php (re-)started on port $port using ${webroot} as web root"
+  echo "==> $dockername with PHP version $php (re-)started on port $port using ${webroot} as web root"
 fi
 
 if [ "$1" == "status" ]
