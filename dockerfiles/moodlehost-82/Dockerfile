@@ -6,7 +6,7 @@ MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 # install xdebug
-RUN pecl install xdebug
+#RUN pecl install xdebug
 #RUN apt-get install -y php-xdebug
 RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20220829/xdebug.so" >> /usr/local/etc/php/php.ini
 RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
