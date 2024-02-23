@@ -28,6 +28,9 @@ RUN echo "extension=yaml.so" >> /usr/local/etc/php/php.ini
 # activate error log
 RUN echo "error_log = /var/www/html/error.log" >> /usr/local/etc/php/php.ini
 
+# set max filesize for uploads to 800MB - just in case...
+RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 800M/' /usr/local/etc/php/php.ini
+
 # enable Moodle cron jobs
 # install cron
 RUN apt-get install -y cron

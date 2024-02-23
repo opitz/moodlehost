@@ -5,12 +5,10 @@ MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-# install xdebug
-#RUN pecl install xdebug
-#RUN apt-get install -y php-xdebug
+
+# activate xdebug
 RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20220829/xdebug.so" >> /usr/local/etc/php/php.ini
 RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
-
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.discover_client_host = 1" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.client_host = 127.0.0.1" >> /usr/local/etc/php/php.ini && \
@@ -28,6 +26,9 @@ RUN echo "extension=yaml.so" >> /usr/local/etc/php/php.ini
 # activate error log
 RUN echo "error_log = /var/www/html/error.log" >> /usr/local/etc/php/php.ini
 
+# set max filesize for uploads to 800MB - just in case...
+RUN sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 800M/' /usr/local/etc/php/php.ini
+
 # enable Moodle cron jobs
 # install cron
 RUN apt-get install -y cron
@@ -41,7 +42,6 @@ RUN rm moodlecron
 #RUN cron &
 
 # start Apache
-#RUN ls /etc/init.d/apache2
 RUN service apache2 start &
 
 
