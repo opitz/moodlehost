@@ -2,6 +2,7 @@ FROM moodlehq/moodle-php-apache:8.2
 MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
 # v.1.0.0 - 2022-06-14
 # v.1.1.0 - 2022-07-01 - adding Moodle cron job
+# v.1.2.0 - 2025-03-06 - adding Redis server
 
 RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
@@ -22,6 +23,9 @@ RUN echo "extension=excimer.so" >> /usr/local/etc/php/php.ini
 RUN apt-get install -y libyaml-dev
 RUN pecl install yaml
 RUN echo "extension=yaml.so" >> /usr/local/etc/php/php.ini
+
+# install Redis server
+RUN apt-get update && apt-get install -y redis
 
 # activate error log
 RUN echo "error_log = /var/www/html/error.log" >> /usr/local/etc/php/php.ini

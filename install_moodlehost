@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ $EUID -ne 0 ]]; then
-   echo "SORRY! This script must be run as root/superuser!" 
+   echo "SORRY! This script must be run as root/superuser!"
    exit 1
 fi
 
@@ -29,5 +29,7 @@ if [ ! -f /etc/moodlehost.conf ]
 	exit 1
 fi
 
-echo "moodlehost is now installed. Change into a directory you want to host and issue 'moodlehost start' to start with default values"
+echo "moodlehost is now installed."
+echo "To start a server with default values change into a directory you want to host and issue 'moodlehost start'"
+echo "Note: To run Moodle you will also need to run a separate database server according to your setup."
 

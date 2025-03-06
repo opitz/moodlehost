@@ -21,8 +21,9 @@
 # v.2.0.0 - 2022-07-19 added option to NOT create a moodledata directory
 # v.2.0.1 - 2022-08-04 applying correct settings for local xdebug on a Mac using PHP 7.x.
 # v.2.0.2 - 2023-11-09 starting cron correctly
+# v.2.1 - 2025-03-06 added starting optional Redis server
 
-version=2.0.2
+version=2.1
 
 usage() {
 	echo "Usage: moodlehost [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -41,7 +42,8 @@ help() {
 	echo "-m none: do NOT create a moodledata directory"
 	echo "-n host: forcing docker to use the host network"
 	echo "-p <port>: set the port number used by Apache (default: 80)"
-	echo "-v <php_version>: select the PHP version (default: 8.0, allowed values: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1)"
+	echo "-r start local Redis server"
+	echo "-v <php_version>: select the PHP version (default: 8.1, allowed values: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2)"
 	echo "-w <webroot>: set the path to the webroot directory (default: $PWD)"
 	exit 1;
 }
@@ -96,7 +98,7 @@ then
 fi
 
 # get options
-while getopts ":d:f:h:lm:n:p:v:w:" x; do
+while getopts ":d:f:h:lm:n:p:rv:w:" x; do
     case "${x}" in
         d)
             d=${OPTARG}
@@ -119,12 +121,15 @@ while getopts ":d:f:h:lm:n:p:v:w:" x; do
         p)
             p=${OPTARG}
             ;;
-	v)
+        r)
+            redis=1
+            ;;
+	      v)
             v=${OPTARG}
-	    ;;
-	w)
+	          ;;
+	      w)
             w=${OPTARG}
-	    ;;
+	          ;;
         *)
             usage
             ;;
@@ -133,7 +138,7 @@ done
 shift $((OPTIND-1))
 
 # default values
-php_options=(7.1 7.2 7.3 7.4 8.0 8.1)
+php_options=(7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3)
 port=80
 moodledata=$PWD/moodledata
 db_host=127.0.0.1
@@ -245,6 +250,13 @@ then
       opitz/moodlehost:${php}
 		fi
 	fi
+
+  # start the Redis server
+  if [ "$redis" == "1" ]
+  then
+    docker exec -it $dockername service redis-server start
+    echo "==> local Redis server active."
+  fi
 
   # apply local xdebug settings for macOS/PHPStorm
   if [ "$localxdebug" == "1" ]
