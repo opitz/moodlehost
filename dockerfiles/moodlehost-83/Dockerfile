@@ -6,7 +6,7 @@ RUN apt-get update
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
 # activate xdebug
-RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20220829/xdebug.so" >> /usr/local/etc/php/php.ini
+RUN echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20230831/xdebug.so" >> /usr/local/etc/php/php.ini
 RUN echo "[xdebug]" >> /usr/local/etc/php/php.ini
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/php.ini && \
 	echo "xdebug.discover_client_host = 1" >> /usr/local/etc/php/php.ini && \
