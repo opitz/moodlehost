@@ -22,6 +22,7 @@
 # v.2.0.1 - 2022-08-04 applying correct settings for local xdebug on a Mac using PHP 7.x.
 # v.2.0.2 - 2023-11-09 starting cron correctly
 # v.2.1 - 2025-03-06 added starting optional Redis server
+# v.2.1.1 - 2026-01-16 using correct xdebug version for PHP 8.3
 
 version=2.1
 
