@@ -23,8 +23,9 @@
 # v.2.0.2 - 2023-11-09 starting cron correctly
 # v.2.1 - 2025-03-06 added starting optional Redis server
 # v.2.1.1 - 2026-01-16 using correct xdebug version for PHP 8.3, default PHP version 8.3
+# v.2.2.0 - 2026-04-22 detect and support new filestructure from MOODLE_501_STABLE on.
 
-version=2.1.1
+version=2.2.0
 
 usage() {
 	echo "Usage: moodlehost [-d <db_host_ip>] [-h] [-m <moodledata_path>] [-p <ip_port>] [-v <php_version> [start][stop][purge]" 1>&2;
@@ -210,6 +211,13 @@ then
 		fi
 	fi
 
+# Detect new filestructure from MOODLE_501_STABLE on.
+  apachedocroot="/var/www/html"
+  if [ -d "${webroot}/public" ]
+  then
+      apachedocroot="/var/www/html/public"
+      echo "==> Detected Moodle 5.1+ structure, serving from public/"
+  fi
 	docker rm -f $dockername >/dev/null 2>/dev/null
 	if [ "$filedir" == "" ]
 	then
@@ -221,6 +229,7 @@ then
 				-v ${webroot}:/var/www/html \
 				-v ${moodledata}:/var/www/moodledata \
 				--add-host db_host:${db_host} \
+        -e APACHE_DOCUMENT_ROOT=${apachedocroot} \
 			opitz/moodlehost:${php}
 		else
       docker run -d -p ${port}:80 \
@@ -228,6 +237,7 @@ then
         -v ${webroot}:/var/www/html \
         -v ${moodledata}:/var/www/moodledata \
         --add-host db_host:${db_host} \
+        -e APACHE_DOCUMENT_ROOT=${apachedocroot} \
       opitz/moodlehost:${php}
 		fi
 	else
@@ -240,6 +250,7 @@ then
 				-v ${moodledata}:/var/www/moodledata \
 				-v ${filedir}:/var/www/moodledata/filedir \
 				--add-host db_host:${db_host} \
+        -e APACHE_DOCUMENT_ROOT=${apachedocroot} \
 			opitz/moodlehost:${php}
 		else
       docker run -d -p ${port}:80 \
@@ -248,6 +259,7 @@ then
         -v ${moodledata}:/var/www/moodledata \
         -v ${filedir}:/var/www/moodledata/filedir \
         --add-host db_host:${db_host} \
+        -e APACHE_DOCUMENT_ROOT=${apachedocroot} \
       opitz/moodlehost:${php}
 		fi
 	fi
