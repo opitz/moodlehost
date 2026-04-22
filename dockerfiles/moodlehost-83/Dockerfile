@@ -1,5 +1,5 @@
 FROM moodlehq/moodle-php-apache:8.3
-MAINTAINER Matthias Opitz <m.opitz@qmul.ac.uk>
+LABEL org.opencontainers.image.authors="opitz@gmx.de"
 # v.1.2.0 - 2025-03-06 - adding Redis server - new version using PHP 8.3
 
 RUN apt-get update
